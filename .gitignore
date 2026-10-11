@@ -14,3 +14,6 @@ contracts/broadcast/**/dry-run/
 env.txt
 .claude/settings.local.json
 contracts/lib/
+.agents/
+.claude/skills/
+skills-lock.json
