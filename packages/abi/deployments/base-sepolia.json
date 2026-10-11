@@ -1,7 +1,13 @@
 {
   "chainId": 84532,
   "ausd": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
-  "leashWallet": "",
-  "deployBlock": 0,
-  "txs": {}
+  "leashWallet": "0xd6a92b451468f1f4deca6fa27fd8c367163d653c",
+  "deployBlock": 47993332,
+  "txs": {
+    "deploy": "0x2fdd5b584dd303a394f3e568382bf387f49cc197e7e0546b81363b17c5c0f647",
+    "setAllowSearch": "0xc24d129db8829675d6bc4a6cdf467260768151a92504e04c659ffec9e5858397",
+    "setAllowScrape": "0x79e361d72542a2989468a5177b752814479818c96bb615f7c83dc002a9062327",
+    "createRoot": "0x6310ed5271f401cb01de5574fb2a923b3d3c18e6b4cc804008cb73a0dcb02690",
+    "fund": "0xa40802c355addb40714ce601367568a6bad26784276e2bb95814af3372f4bee8"
+  }
 }
