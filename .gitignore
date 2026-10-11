@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.local
+apps/agents/.keys.json
+data/
+.next/
+dist/
+out/
+contracts/out/
+contracts/cache/
+contracts/broadcast/**/dry-run/
+*.log
+.DS_Store
+env.txt
+.claude/settings.local.json
+contracts/lib/
