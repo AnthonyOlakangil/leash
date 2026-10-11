@@ -118,7 +118,7 @@ async function planAssignments(client: Anthropic, model: string): Promise<string
   try {
     const res = await client.messages.create({
       model,
-      max_tokens: 600,
+      max_tokens: 4000,
       tools: [
         {
           name: "assign",
@@ -126,8 +126,9 @@ async function planAssignments(client: Anthropic, model: string): Promise<string
           input_schema: { type: "object", properties: { assignments: { type: "array", items: { type: "string" }, minItems: 3, maxItems: 3 } }, required: ["assignments"] },
         },
       ],
-      tool_choice: { type: "tool", name: "assign" },
-      messages: [{ role: "user", content: `You are an orchestrator agent. Task: "${TASK}" Split it into 3 distinct research assignments for 3 sub-agents.` }],
+      // Forced tool_choice ("tool"/"any") is rejected by current models; ask for the tool call in the prompt instead.
+      tool_choice: { type: "auto" },
+      messages: [{ role: "user", content: `You are an orchestrator agent. Task: "${TASK}" Split it into 3 distinct research assignments for 3 sub-agents. Respond only by calling the assign tool.` }],
     });
     const tu = res.content.find((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
     const a = (tu?.input as { assignments?: string[] } | undefined)?.assignments;
