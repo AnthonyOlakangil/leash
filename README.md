@@ -87,6 +87,7 @@ What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hiera
 - For the demo, the owner key is held server-side by the facilitator. This is a demo trade-off, not a production design.
 - A hostile sibling that learns a child's key before the legitimate registration can grief that registration. It cannot overspend, because the budget is charged against the whole ancestor chain.
 - The force-broadcast path and `/demo/bypass` are demo-only and unauthenticated.
+- `createRoot` and `createChild` do not reject an expiry that is already in the past (a child's expiry only has to be at or below its parent's). Such a node can never pay, so this wastes gas but cannot move funds.
 - This is unaudited hackathon code. Do not use it with funds you cannot lose.
 
 ## Run locally
