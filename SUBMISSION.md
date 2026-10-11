@@ -11,6 +11,6 @@ AI agents now pay for APIs on their own, and the scary failure is a prompt injec
 
 **GitHub:** https://github.com/AnthonyOlakangil/leash
 
-**Live link:** https://leash-dashboard-rho.vercel.app (read-only chain view; the full demo runs locally). Contract live and verified on Base Sepolia: https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code (demo recording wallet: https://base-sepolia.blockscout.com/address/0x01a38451fdE9CeA24cDF3Ee212af6b0950645417#code)
+**Live link:** https://leash-dashboard-rho.vercel.app (read-only chain view; the full demo runs locally). Contract live and verified on Base Sepolia: https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code (demo recording wallet: https://base-sepolia.blockscout.com/address/0xf7c239E1AeB8C418557349561572Ef42D3933B02#code)
 
 **YouTube URL:** 
