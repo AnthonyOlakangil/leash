@@ -43,3 +43,10 @@ Phase: P3 complete, pre-freeze. Updated 15:02 PT. ~60 min ahead of plan.
 - ETH: DEPLOYER 0.000134, RELAYER 0.000159 (relayer topped up 0.00006 from deployer)
 - Commands: terminal 1 `pnpm services`; browser http://localhost:3000; terminal 2 `pnpm --filter agents demo`. Shot list: docs/DEMO.md
 - Pending user: record video, choose public repo, optional vercel login, rotate Anthropic + Context.dev keys after submission (exposed in a local agent transcript, never committed)
+
+## Wrap-up (15:18)
+- Repo renamed and public: https://github.com/AnthonyOlakangil/leash (history secret scan clean, D-011)
+- Hosted read-only dashboard: https://leash-dashboard-rho.vercel.app ; ElevenLabs skipped (no key) (D-010)
+- README final; SUBMISSION.md written (YouTube URL blank)
+- Recording wallet 0x79a443e6677C8324848a127201953b54374e971A untouched and verified; services running; dashboard open
+- Tests: 54 Foundry (incl. 3 audit) + 5 fork + 7 client, all passing
