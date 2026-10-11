@@ -37,3 +37,9 @@ Phase: P3 complete, pre-freeze. Updated 15:02 PT. ~60 min ahead of plan.
 - LLM mode completed on live chain (14:49)
 - Dashboard: tree, feed with Basescan links, paused states, cap raise; Blocked lane via facilitator SSE
 - Next: demo-director review + docs/DEMO.md, fresh wallet for recording, READY TO RECORD
+
+## READY TO RECORD (15:06)
+- Recording wallet: 0x79a443e6677C8324848a127201953b54374e971A (verified on Blockscout, 5 AUSD, payees allowlisted, no root, events archived)
+- ETH: DEPLOYER 0.000134, RELAYER 0.000159 (relayer topped up 0.00006 from deployer)
+- Commands: terminal 1 `pnpm services`; browser http://localhost:3000; terminal 2 `pnpm --filter agents demo`. Shot list: docs/DEMO.md
+- Pending user: record video, choose public repo, optional vercel login, rotate Anthropic + Context.dev keys after submission (exposed in a local agent transcript, never committed)
