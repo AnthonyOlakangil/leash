@@ -1,6 +1,6 @@
 # Status
 
-Phase: P2 (deploy + first real paid call). Updated 14:47 PT. ~25 min ahead of plan.
+Phase: P3 (demo end to end). Updated 14:50 PT. ~45 min ahead of plan.
 
 ## Done
 - P0 gate PASSED on live AUSD (D-002); fork test 5/5
@@ -26,3 +26,8 @@ Phase: P2 (deploy + first real paid call). Updated 14:47 PT. ~25 min ahead of pl
 ## P2 proof (14:45)
 - Real paid request: /search 402 -> paid -> 200, Paid event: https://sepolia.basescan.org/tx/0x92f81d12dbfb1308da96788864dcde293b1068f1039352dbdd35cce1ca005048 (gas 144,071)
 - Decoded block: /premium-intel -> settle reverted PayeeNotAllowed(0) onchain: https://sepolia.basescan.org/tx/0xf1548f0b1fc7ccb4ec7e4aa437cb12a85d883f9c6a13e507b4114bb3e5a36a16
+
+## P3 progress (14:50)
+- Scripted demo (all 9 beats) ran on Base Sepolia live: log /tmp/live-demo-1.log. Bypass tx to AUSD reverted (status 0): https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc ; ATTACKER balance 0.
+- LLM mode ran on Base Sepolia live (claude-sonnet-5-5): 3 sub-agents paid searches/scrapes; restricted searcher-3 chose /scrape and was blocked onchain PayeeNotAllowed(7); its signature replayed to AUSD and rejected.
+- Remaining: dashboard fixes in progress; pnpm demo one-command run; docs; fresh wallet for recording.

@@ -26,3 +26,7 @@ Rationale: sepolia.base.org rejects eth_getLogs spans over 200 blocks; found by 
 
 ## D-006 Fork integration before live deploy (14:40)
 Decision: run the full stack (facilitator, seller, agents scripted + LLM, dashboard) against an anvil fork of Base Sepolia with real AUSD before spending live gas. All 9 scripted beats passed; LLM mode completed (model declined the injection on its own; scripted mode demonstrates the onchain block). Found and fixed: forced tool_choice unsupported by claude-sonnet-5-5; getLogs range.
+
+## D-007 Stale reads on the public RPC (14:48)
+Decision: agents wait until getNode reflects an owner unpause (+3s), and facilitator retries a failed delegate/admin simulation once after 2.5s. Payments are unaffected (demo payments use forceBroadcast, so the chain decides).
+Rationale: first live LLM run failed createChild with Paused(1) right after a mined unpause; sepolia.base.org is load-balanced and one backend can lag a block.
