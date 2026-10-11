@@ -17,3 +17,4 @@ contracts/lib/
 .agents/
 .claude/skills/
 skills-lock.json
+.env.fork
