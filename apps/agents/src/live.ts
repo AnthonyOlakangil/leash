@@ -57,7 +57,7 @@ async function runSubAgent(
   let used = 0;
 
   for (let turn = 0; turn < MAX_TOOL_CALLS + 2; turn++) {
-    const res = await client.messages.create({ model, max_tokens: 1024, system, tools: subTools, messages });
+    const res = await client.messages.create({ model, max_tokens: 4000, system, tools: subTools, messages });
     messages.push({ role: "assistant", content: res.content });
     const uses = res.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
     if (uses.length === 0) {
@@ -169,7 +169,7 @@ export async function runLive(ctx: Ctx, children: Child[], model: string): Promi
 
   const final = await client.messages.create({
     model,
-    max_tokens: 700,
+    max_tokens: 2000,
     messages: [{ role: "user", content: `Task: "${TASK}"\nYour 3 sub-agents reported:\n${summaries.map((s, i) => `${children[i].name}: ${s}`).join("\n\n")}\n\nGive the user a concise final recommendation.` }],
   });
   const text = final.content.filter((b): b is Anthropic.TextBlock => b.type === "text").map((b) => b.text).join("\n");
