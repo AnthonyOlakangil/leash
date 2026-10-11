@@ -20,6 +20,7 @@ export type ChainState = {
   mode: "live" | "mock";
   wallet?: string; decimals: number; balance?: string;
   labels: Record<string, string>; // lowercase address -> label
+  names?: Record<string, string>; // lowercase node key address -> agent name (addresses only, never keys)
   nodes: UiNode[]; logs: ChainLog[];
   error?: string;
 };

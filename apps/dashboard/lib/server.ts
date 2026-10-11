@@ -1,9 +1,13 @@
+import fs from "node:fs";
+import path from "node:path";
+import { privateKeyToAddress } from "viem/accounts";
 import { createPublicClient, http, erc20Abi, type Address, type PublicClient } from "viem";
 import { baseSepolia } from "viem/chains";
 import { leashWalletAbi, deployment } from "@leash/abi";
 import type { ChainLog, ChainState, UiNode } from "./types";
 
 export function walletAddress(): Address | undefined {
+  if (process.env.LEASH_MOCK === "1") return undefined; // force mock mode
   const a = process.env.NEXT_PUBLIC_LEASH_WALLET || process.env.LEASH_WALLET || (deployment as any).leashWallet;
   return a && /^0x[0-9a-fA-F]{40}$/.test(a) ? (a as Address) : undefined;
 }
@@ -45,7 +49,7 @@ async function syncLogs(wallet: Address) {
   const latest = await c.getBlockNumber();
   if (cache.next === 0n) {
     const dep = BigInt((deployment as any).deployBlock || 0);
-    cache.next = dep > 0n ? dep : latest > 1500n ? latest - 1500n : 0n;
+    cache.next = dep > 0n && dep <= latest ? dep : latest > 1500n ? latest - 1500n : 0n;
   }
   while (cache.next <= latest) {
     // Public Base Sepolia RPC caps eth_getLogs at a 200-block range.
@@ -87,5 +91,20 @@ export async function readState(wallet: Address): Promise<ChainState> {
   );
   await syncLogs(wallet);
   const logs = [...cache.logs.values()].sort((a, b) => a.ts - b.ts || a.logIndex - b.logIndex).slice(-300);
-  return { mode: "live", wallet, decimals: cache.decimals, balance: String(balance), labels: payeeLabels(), nodes, logs };
+  return { mode: "live", wallet, decimals: cache.decimals, balance: String(balance), labels: payeeLabels(), names: nodeNames(wallet), nodes, logs };
+}
+
+/** Node key address -> name. Reads apps/agents/.keys.json server-side; only derived addresses leave this function. */
+export function nodeNames(wallet: string): Record<string, string> {
+  const m: Record<string, string> = {};
+  if (process.env.ROOT_AGENT_ADDRESS) m[process.env.ROOT_AGENT_ADDRESS.toLowerCase()] = "orchestrator";
+  try {
+    const f = path.resolve(process.cwd(), "../agents/.keys.json");
+    const j = JSON.parse(fs.readFileSync(f, "utf8"));
+    if (!j.wallet || String(j.wallet).toLowerCase() === wallet.toLowerCase())
+      for (const [name, k] of Object.entries(j.keys ?? {})) {
+        try { m[privateKeyToAddress(k as `0x${string}`).toLowerCase()] = name; } catch {}
+      }
+  } catch {}
+  return m;
 }

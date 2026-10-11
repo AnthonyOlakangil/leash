@@ -7,6 +7,7 @@ dotenv.config({ path: path.resolve(here, "../../.env") });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: false, // SSE proxy must not be buffered by gzip
   transpilePackages: ["@leash/abi"],
   webpack: (config) => {
     config.resolve.extensionAlias = { ".js": [".ts", ".tsx", ".js"] };
