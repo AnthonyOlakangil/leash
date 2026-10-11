@@ -10,7 +10,7 @@ Leash is a spending allowance for AI agents that they can split among sub-agents
 | Verified source (Blockscout) | https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code |
 | Basescan | https://sepolia.basescan.org/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c |
 | AUSD (Base Sepolia) | `0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC` (EIP-712 domain "Agora Dollar" / "1", 6 decimals) |
-| Demo video | Demo video: (link coming) |
+| Demo video | (link coming) |
 
 ## The problem
 
@@ -65,7 +65,7 @@ AUSD supports the ERC-3009 `transferWithAuthorization` overload that takes a byt
 
 Delegation and session-key systems already exist and are the reference points here. MetaMask's Delegation Framework and ERC-7710 define delegation between smart accounts, and x402 has an `erc7710` method for them. Coinbase Spend Permissions, Safe with Zodiac modules, and session-key wallets cover related ground. x402 issue #2641 discusses a view-only ERC-1271 approach for the default `eip3009` rail. Draft ERC-8366 (ethereum/ERCs PR #1929) is still a draft.
 
-What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hierarchical budgets and payee allowlists, and it accepts a signature only during the `settle()` call that is charging for it. The mechanism uses EIP-1153 transient storage. It brings these controls to x402's default `eip3009` rail without changing the token or the x402 flow, and the token itself refuses a direct-to-token bypass.
+What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hierarchical budgets and payee allowlists, and it accepts a signature only during the `settle()` call that is charging for it. The mechanism uses EIP-1153 transient storage. It brings these controls to x402's default `eip3009` rail with an unmodified token. It does need a Leash-aware facilitator that calls `settle()` instead of the token, and the token itself refuses a direct-to-token bypass.
 
 ## What is real
 
@@ -74,7 +74,8 @@ What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hiera
 | LeashWallet | Deployed and verified on Base Sepolia (address above). |
 | Payments | Real testnet AUSD moves through `settle()`. Example paid `/search` call: https://sepolia.basescan.org/tx/0x92f81d12dbfb1308da96788864dcde293b1068f1039352dbdd35cce1ca005048 |
 | Blocked payment | A `/premium-intel` payment to a non-allowlisted payee reverted onchain with `PayeeNotAllowed(0)`: https://sepolia.basescan.org/tx/0xf1548f0b1fc7ccb4ec7e4aa437cb12a85d883f9c6a13e507b4114bb3e5a36a16 |
-| Direct-to-AUSD bypass | Sending the same class of signed authorization straight to AUSD was rejected: https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc |
+| Direct-to-AUSD bypass | A blocked payment's signature, replayed straight to AUSD, was rejected: https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc |
+| Search and scrape | The seller's `/search` and `/scrape` routes call Context.dev live (stub results are clearly labeled if the API is unavailable). |
 | LLM agents | Live mode uses `claude-sonnet-5-5`, selected at boot from `/v1/models`. |
 | Scripted replay | `DEMO_SCRIPTED` replays the same beats and is labeled `[SCRIPTED]` in logs. |
 | Listing fixture | `/listings/sax-42` is a labeled test fixture served by our own seller, used to demonstrate prompt injection. |
@@ -119,4 +120,4 @@ Repository layout and the architecture are in [docs/ARCHITECTURE.md](docs/ARCHIT
 
 ## Tracks entered
 
-Hackathon: B@BHacks 2.0 (UC Berkeley). Tracks entered are listed in the submission form.
+Hackathon: B@BHacks 2.0 (UC Berkeley). Tracks: Most Technically Impressive, AUSD (Agora), YZi Labs, Context.dev.
