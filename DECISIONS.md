@@ -38,3 +38,11 @@ Consequences: the contract accepts a child expiry already in the past (it is <= 
 
 ## D-009 SHOULD items (15:02)
 Decision: raise-cap step-up ships (dashboard "Raise cap" button + scripted beat 8). ElevenLabs TTS cut: no ELEVENLABS_API_KEY / VOICE_ID. Vercel dashboard: pending user `vercel login`; a hosted dashboard would run chain-only (no local facilitator SSE, no owner buttons).
+
+## D-010 Wrap-up SHOULD items (15:15)
+Decision: (a) ElevenLabs TTS skipped: ELEVENLABS_API_KEY and VOICE_ID are not set. (b) Dashboard deployed to Vercel as a read-only chain view: https://leash-dashboard-rho.vercel.app (reads the recording wallet from Base Sepolia).
+Rationale: built locally with LEASH_NO_DOTENV=1 and only public addresses in the environment (the Vercel CLI would otherwise upload .env), output scanned for every secret value (clean), then `vercel deploy --prebuilt` from the repo root (pnpm monorepo needs rootDirectory apps/dashboard).
+Consequences: hosted owner buttons and the off-chain Blocked lane events need the local facilitator; the local demo is the full experience.
+
+## D-011 Pre-public secret scan (15:11)
+Decision: no history rewrite needed. No sk-ant or Context.dev key prefix, and no .env secret value (API keys, ADMIN_TOKEN, deployer/relayer/root private keys) appears in any commit. The 45 unique 64-hex strings in history are tx hashes, typehashes, storage slots, event topics, the domain separator, and a public test-only golden key; none derives to a project account. .env, .env.fork and apps/agents/.keys.json were never committed. Added deny rules for reading/printing .env to .claude/settings.json and CLAUDE.md.
