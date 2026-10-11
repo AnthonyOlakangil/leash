@@ -122,7 +122,7 @@ async function findFrontRun(wallet: Address, nonce: Hex): Promise<{ txHash: Hex;
     if (!used) return undefined;
     const head = await publicClient.getBlockNumber();
     const logs = await publicClient.getContractEvents({
-      address: wallet, abi: leashWalletAbi, eventName: "Paid", fromBlock: head > 2000n ? head - 2000n : 0n, toBlock: head,
+      address: wallet, abi: leashWalletAbi, eventName: "Paid", fromBlock: head > 150n ? head - 150n : 0n, toBlock: head,
     });
     const hit = logs.find((l) => (l.args as any).nonce?.toLowerCase() === nonce.toLowerCase());
     return hit ? { txHash: hit.transactionHash, id: (hit.args as any).id.toString() } : undefined;
@@ -139,6 +139,28 @@ app.get("/supported", (_req, res) => {
   res.json({ kinds: [{ x402Version: 2, scheme: "exact", network: X402_NETWORK }] });
 });
 
+/**
+ * Requirement checks that no client flag may bypass (force broadcast only overrides contract-simulation failures).
+ * strict = paymentRequirements must carry payTo and amount (always true in /settle).
+ */
+function checkRequirements(auth: AuthJson, reqs: PaymentRequirements, wallet: Address, strict: boolean): string | undefined {
+  if (auth.from.toLowerCase() !== wallet.toLowerCase()) return "authorization.from is not the LeashWallet";
+  if (strict && (!reqs.payTo || !reqs.amount)) return "paymentRequirements.payTo and amount are required";
+  if (strict && (!reqs.asset || reqs.asset.toLowerCase() !== AUSD_ADDRESS.toLowerCase())) return "asset is not AUSD";
+  if (reqs.asset && reqs.asset.toLowerCase() !== AUSD_ADDRESS.toLowerCase()) return "asset is not AUSD";
+  if (reqs.network && reqs.network !== X402_NETWORK) return `unsupported network ${reqs.network}`;
+  if (reqs.payTo && reqs.payTo.toLowerCase() !== auth.to.toLowerCase()) return "authorization.to does not match payTo";
+  try {
+    if (reqs.amount && BigInt(auth.value) < BigInt(reqs.amount)) return "authorization.value is below the required amount";
+  } catch {
+    return "paymentRequirements.amount is malformed";
+  }
+  const now = BigInt(Math.floor(Date.now() / 1000));
+  if (!(now > BigInt(auth.validAfter))) return "authorization not yet valid";
+  if (!(now < BigInt(auth.validBefore))) return "authorization expired";
+  return undefined;
+}
+
 app.post("/verify", async (req: Request, res: Response) => {
   const parsed = parsePayment(req.body);
   if ("error" in parsed) return void res.json({ isValid: false, invalidReason: parsed.error });
@@ -146,15 +168,8 @@ app.post("/verify", async (req: Request, res: Response) => {
   const wallet = getWallet();
   if (!wallet) return void res.json({ isValid: false, invalidReason: NOT_DEPLOYED });
 
-  const bad = (invalidReason: string) => res.json({ isValid: false, invalidReason });
-  if (auth.from.toLowerCase() !== wallet.toLowerCase()) return void bad("authorization.from is not the LeashWallet");
-  if (reqs.asset && reqs.asset.toLowerCase() !== AUSD_ADDRESS.toLowerCase()) return void bad("asset is not AUSD");
-  if (reqs.network && reqs.network !== X402_NETWORK) return void bad(`unsupported network ${reqs.network}`);
-  if (reqs.payTo && reqs.payTo.toLowerCase() !== auth.to.toLowerCase()) return void bad("authorization.to does not match payTo");
-  if (reqs.amount && BigInt(auth.value) < BigInt(reqs.amount)) return void bad("authorization.value is below the required amount");
-  const now = BigInt(Math.floor(Date.now() / 1000));
-  if (!(now > BigInt(auth.validAfter))) return void bad("authorization not yet valid");
-  if (!(now < BigInt(auth.validBefore))) return void bad("authorization expired");
+  const badReason = checkRequirements(auth, reqs, wallet, false);
+  if (badReason) return void res.json({ isValid: false, invalidReason: badReason });
 
   const signer = await recoverSigner(auth, signature);
   const decoded = await simulateSettle(wallet, auth, signature);
@@ -168,11 +183,14 @@ app.post("/settle", async (req: Request, res: Response) => {
   const parsed = parsePayment(req.body);
   const force = req.body?.forceBroadcast === true;
   if ("error" in parsed) return void res.json({ success: false, network: X402_NETWORK, errorReason: parsed.error });
-  const { auth, signature } = parsed;
+  const { auth, signature, req: reqs } = parsed;
   const wallet = getWallet();
   if (!wallet) return void res.json({ success: false, network: X402_NETWORK, errorReason: NOT_DEPLOYED });
-  if (auth.from.toLowerCase() !== wallet.toLowerCase())
-    return void res.json({ success: false, network: X402_NETWORK, errorReason: "authorization.from is not the LeashWallet" });
+  const badReason = checkRequirements(auth, reqs, wallet, true);
+  if (badReason) {
+    emit({ kind: "blocked", payee: auth.to, payeeLabel: payeeLabel(auth.to), amount: auth.value, error: { name: "InvalidPayment", args: [], reason: badReason } });
+    return void res.json({ success: false, network: X402_NETWORK, errorReason: badReason, decoded: { name: "InvalidPayment", args: [], reason: badReason } });
+  }
 
   const signer = await recoverSigner(auth, signature);
   const nodeId = await nodeIdOf(wallet, signer);
@@ -181,6 +199,11 @@ app.post("/settle", async (req: Request, res: Response) => {
   // Always simulate first (free eth_call). It gives the decoded error even for force broadcasts.
   const preDecoded = await simulateSettle(wallet, auth, signature);
   if (preDecoded && !force) {
+    const fr0 = await findFrontRun(wallet, auth.nonce);
+    if (fr0) {
+      emit({ kind: "paid", ...base, nodeId: fr0.id, txHash: fr0.txHash, detail: "settled by an earlier transaction (front-run)" });
+      return void res.json({ success: true, transaction: fr0.txHash, network: X402_NETWORK, payer: signer });
+    }
     emit({ kind: "blocked", ...base, error: preDecoded });
     return void res.json({ success: false, network: X402_NETWORK, payer: signer, errorReason: preDecoded.reason, decoded: preDecoded });
   }
@@ -198,6 +221,11 @@ app.post("/settle", async (req: Request, res: Response) => {
     );
     receipt = await publicClient.waitForTransactionReceipt({ hash: txHash, timeout: 60_000 });
   } catch (e) {
+    const fr1 = await findFrontRun(wallet, auth.nonce);
+    if (fr1) {
+      emit({ kind: "paid", ...base, nodeId: fr1.id, txHash: fr1.txHash, detail: "settled by an earlier transaction (front-run)" });
+      return void res.json({ success: true, transaction: fr1.txHash, network: X402_NETWORK, payer: signer });
+    }
     const decoded = decodeLeashError(e) ?? preDecoded ?? unknownDecoded(e);
     emit({ kind: "blocked", ...base, txHash: scan(txHash), error: decoded });
     return void res.json({ success: false, network: X402_NETWORK, payer: signer, transaction: txHash, errorReason: decoded.reason, decoded });

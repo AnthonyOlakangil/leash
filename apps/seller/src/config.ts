@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-dotenv.config({ path: resolve(REPO_ROOT, ".env") });
+dotenv.config({ path: resolve(REPO_ROOT, process.env.LEASH_ENV_FILE || ".env") });
 
 export const PORT = Number(process.env.SELLER_PORT || 4021);
 export const SELLER_URL = (process.env.SELLER_URL || `http://localhost:${PORT}`).replace(/\/$/, "");

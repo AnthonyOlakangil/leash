@@ -46,6 +46,9 @@ export function decodeLeashError(err: unknown): Decoded | undefined {
     }
   }
   for (const data of collectHex(err)) {
+    if (data.toLowerCase().startsWith("0x2ce87eeb")) {
+      return { name: "InvalidAuthorization", args: [], reason: "AUSD rejected the authorization (outside its validity window or nonce already used)" };
+    }
     try {
       const r = decodeErrorResult({ abi: leashWalletAbi, data });
       const args = ((r.args as readonly unknown[] | undefined) ?? []).map((a) => String(a));

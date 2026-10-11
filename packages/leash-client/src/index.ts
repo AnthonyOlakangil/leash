@@ -70,9 +70,14 @@ export function createLeashFetch(opts: LeashFetchOptions) {
     (domainPromise ??= (async () => {
       const d = await publicClient.readContract({ address: AUSD_ADDRESS, abi: ausdAbi, functionName: "eip712Domain" });
       const [, name, version, chainId, verifyingContract] = d;
-      if (name !== AUSD_DOMAIN_NAME || version !== AUSD_DOMAIN_VERSION || Number(chainId) !== CHAIN_ID) {
+      if (
+        name !== AUSD_DOMAIN_NAME ||
+        version !== AUSD_DOMAIN_VERSION ||
+        Number(chainId) !== CHAIN_ID ||
+        verifyingContract.toLowerCase() !== AUSD_ADDRESS.toLowerCase()
+      ) {
         throw new Error(
-          `AUSD eip712Domain mismatch: got (${name}, ${version}, ${chainId}) expected (${AUSD_DOMAIN_NAME}, ${AUSD_DOMAIN_VERSION}, ${CHAIN_ID})`,
+          `AUSD eip712Domain mismatch: got (${name}, ${version}, ${chainId}, ${verifyingContract}) expected (${AUSD_DOMAIN_NAME}, ${AUSD_DOMAIN_VERSION}, ${CHAIN_ID}, ${AUSD_ADDRESS})`,
         );
       }
       return { name, version, chainId: Number(chainId), verifyingContract };

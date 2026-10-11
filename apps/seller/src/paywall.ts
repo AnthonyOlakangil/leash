@@ -59,7 +59,8 @@ export function paywall(opts: { amount: () => bigint; payTo: () => Address; desc
       const body = { paymentPayload, paymentRequirements: requirement };
 
       const v = await post("/verify", body).catch((e) => ({ isValid: false, invalidReason: `facilitator unreachable: ${e.message}` }));
-      if (!v.isValid && !force) {
+      // Force broadcast may only override a contract-simulation failure (v.decoded); requirement failures always stop.
+      if (!v.isValid && !(force && v.decoded)) {
         res.setHeader("PAYMENT-REQUIRED", b64(required));
         return void res.status(402).json({
           error: "payment_blocked",

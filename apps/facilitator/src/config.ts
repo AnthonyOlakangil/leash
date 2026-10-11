@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import type { Address, Hex } from "viem";
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-export const ENV_PATH = process.env.LEASH_ENV_FILE ? resolve(process.env.LEASH_ENV_FILE) : resolve(REPO_ROOT, ".env");
+export const ENV_PATH = process.env.LEASH_ENV_FILE ? resolve(REPO_ROOT, process.env.LEASH_ENV_FILE) : resolve(REPO_ROOT, ".env");
 dotenv.config({ path: ENV_PATH });
 
 const DEPLOYMENT_PATH = resolve(REPO_ROOT, "packages/abi/deployments/base-sepolia.json");
