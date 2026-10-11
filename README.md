@@ -9,6 +9,7 @@ Leash is a spending allowance for AI agents that they can split among sub-agents
 | LeashWallet (Base Sepolia) | `0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c` |
 | Verified source (Blockscout) | https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code |
 | Basescan | https://sepolia.basescan.org/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c |
+| Demo recording wallet (fresh deploy, verified) | `0x79a443e6677C8324848a127201953b54374e971A`: https://sepolia.basescan.org/address/0x79a443e6677C8324848a127201953b54374e971A |
 | AUSD (Base Sepolia) | `0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC` (EIP-712 domain "Agora Dollar" / "1", 6 decimals) |
 | Demo video | (link coming) |
 
