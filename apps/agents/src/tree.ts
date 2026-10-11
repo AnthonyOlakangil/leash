@@ -52,6 +52,9 @@ export async function ensureRoot(ctx: Pick<Ctx, "env" | "pc" | "decimals" | "roo
     const r = await adminPost(env, "/admin/unpause", { id });
     if (!r.body.ok) throw new Error(`unpause failed: ${JSON.stringify(r.body.error ?? r.body)}`);
     log(`unpaused  tx ${txLink(r.body.txHash)}`);
+    // The public RPC is load-balanced; wait until reads reflect the unpause before the facilitator simulates createChild.
+    for (let i = 0; i < 15 && (await getNode(pc, env, id)).paused; i++) await new Promise((res) => setTimeout(res, 1000));
+    await new Promise((res) => setTimeout(res, 3000));
   }
   return { rootId: id, rootExpiry: node.expiry };
 }

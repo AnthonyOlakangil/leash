@@ -288,6 +288,16 @@ app.post("/demo/bypass", async (req: Request, res: Response) => {
 });
 
 // ---- delegation relay (anyone can relay; signatures authorize)
+/** The public RPC is load-balanced, so a read right after a write can be one block stale; retry a failed simulation once. */
+async function simulateWithRetry<T>(sim: () => Promise<T>): Promise<T> {
+  try {
+    return await sim();
+  } catch {
+    await new Promise((r) => setTimeout(r, 2500));
+    return await sim();
+  }
+}
+
 app.post("/delegate", async (req: Request, res: Response) => {
   const wallet = getWallet();
   if (!wallet) return void res.status(503).json({ ok: false, error: { name: "NotDeployed", args: [], reason: NOT_DEPLOYED } });
@@ -317,7 +327,7 @@ app.post("/delegate", async (req: Request, res: Response) => {
     }
 
     try {
-      await publicClient.simulateContract({ address: wallet, abi: leashWalletAbi, functionName: fn, args, account: relayer().account } as any);
+      await simulateWithRetry(() => publicClient.simulateContract({ address: wallet, abi: leashWalletAbi, functionName: fn, args, account: relayer().account } as any));
     } catch (e) {
       const d = decodeLeashError(e) ?? unknownDecoded(e);
       emit({ kind: "delegation", detail: `${detail} FAILED`, error: d });
@@ -374,7 +384,7 @@ app.post("/admin/:action", async (req: Request, res: Response) => {
     const detail = route.detail(req.body ?? {});
     const o = owner();
     try {
-      await publicClient.simulateContract({ address: wallet, abi: leashWalletAbi, functionName: route.fn, args, account: o.account } as any);
+      await simulateWithRetry(() => publicClient.simulateContract({ address: wallet, abi: leashWalletAbi, functionName: route.fn, args, account: o.account } as any));
     } catch (e) {
       const d = decodeLeashError(e) ?? unknownDecoded(e);
       emit({ kind: "admin", detail: `${detail} FAILED`, error: d });
