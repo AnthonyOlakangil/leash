@@ -1,0 +1,36 @@
+{
+  "note": "Golden vectors from contracts/test/Golden.t.sol. testOnlyPrivateKey = keccak256(\"leash.golden.key\"), public test key, never fund it. Amounts atomic units (6 decimals).",
+  "chainId": 84532,
+  "testOnlyPrivateKey": "0xf0fbbb5dc2bf4c5bbdabc1cee8bef50bd55a6607a4e86d3283a3625461d54bf4",
+  "signer": "0x93E74594c6e78c766c84211b954aed5b8C6fAB5c",
+  "transferWithAuthorization": {
+    "ausd": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
+    "domainSeparator": "0x5a85328c8aae02b57a5bc1fb1848cb2fb9ccbdc204c554a4db199b13fed1e8bb",
+    "from": "0x1111111111111111111111111111111111111111",
+    "to": "0x2222222222222222222222222222222222222222",
+    "value": "20000",
+    "validAfter": "1791700000",
+    "validBefore": "1791700120",
+    "nonce": "0x59cb172d976889eaa2a63d0b694a35e79defc4304315b55e20bee22da8d769b1",
+    "digest": "0x8781ace444fdfc139595e1a7115dc875d25c37433d480586ba4429e8c79e3260",
+    "signature": "0xde0a844672388a61f0833d743cd3c789ae0f429ef5cf278dc2674db435227fcd08b7e35408158993cf7ee0ca6e2e775d48318a21021031b36f5449ba14df22a71c"
+  },
+  "createChild": {
+    "wallet": "0x1111111111111111111111111111111111111111",
+    "domainSeparator": "0x837a47dbe5d46f4957f65474d4c8b36f49f110a9c4bbfb54b8a7a7e6259a85c8",
+    "parentId": "1",
+    "key": "0xeF3518450BeffB91e2e1d727b2001f06e9462318",
+    "cap": "250000", "maxPerCall": "100000", "expiry": "1791788340", "restricted": true,
+    "payees": ["0x2222222222222222222222222222222222222222", "0x3333333333333333333333333333333333333333"],
+    "payeesHash": "0x463f844151f18ccee377b57a06172686855bea0a1cac14ccb9b8858a4322c6b7",
+    "nonce": "7", "deadline": "1791700300",
+    "digest": "0x7e5b54e46fe2bbdfc63038db7cd2879b65e4ebcbc2a75e803aa767be80da0f92",
+    "signature": "0xa6ff6d9ab5039e3b97684e2ad50b2cba36255fbb9a8e679e38322812316a4be66b43cdf1bbf3b53c56c36919db392b977bdc78da572c6efd3b5db5f04d45f6cb1c"
+  },
+  "pauseChild": {
+    "wallet": "0x1111111111111111111111111111111111111111",
+    "target": "2", "nonce": "9", "deadline": "1791700300",
+    "digest": "0xa73167b4ae993f131ee6ec3079419cd24a5cc4baabd8f9baac108cda7046a62b",
+    "signature": "0xf827c591ade235c5017a546774cbe517804bd1df84a46498c6324e623efad8972f6e81bccd3e184a29fcf674dee9b07a5d069cc748e917583e1cf36ca10a297c1b"
+  }
+}

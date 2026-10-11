@@ -61,10 +61,10 @@ contract LeashWallet is ILeashWallet, ReentrancyGuardTransient {
     uint256 private _nodeCount;
 
     mapping(uint256 => Node) private _nodes;
-    mapping(address => uint256) public nodeOfKey;
-    mapping(address => bool) public allowlist;
-    mapping(uint256 => mapping(address => bool)) public nodeAllow;
-    mapping(bytes32 => bool) public usedDelegation;
+    mapping(address key => uint256) public nodeOfKey;
+    mapping(address payee => bool) public allowlist;
+    mapping(uint256 id => mapping(address payee => bool)) public nodeAllow;
+    mapping(bytes32 structHash => bool) public usedDelegation;
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
@@ -133,7 +133,8 @@ contract LeashWallet is ILeashWallet, ReentrancyGuardTransient {
     /// @notice ERC-1271. Valid ONLY when called by AUSD for a digest flagged inside settle().
     /// View + TLOAD only (TSTORE is illegal under STATICCALL). The wallet therefore can never sign
     /// permits or anything else outside a settle() in progress.
-    function isValidSignature(bytes32 digest, bytes calldata) external view returns (bytes4) {
+    function isValidSignature(bytes32 digest, bytes calldata signature) external view returns (bytes4) {
+        signature; // unused: AUSD already verified the agent's ECDSA sig; we gate on the flagged digest only
         if (msg.sender != AUSD) return INVALID_1271;
         bytes32 slot = _approvalSlot(digest);
         uint256 flag;
@@ -294,9 +295,9 @@ contract LeashWallet is ILeashWallet, ReentrancyGuardTransient {
     }
 
     /// @notice min over self and every ancestor of (cap - spent), saturating at 0. 0 for unknown ids.
-    function remaining(uint256 id) external view returns (uint256 r) {
+    function remaining(uint256 id) external view returns (uint256) {
         if (id == 0 || id > _nodeCount) return 0;
-        r = type(uint256).max;
+        uint256 r = type(uint256).max;
         uint256 n = id;
         while (n != 0) {
             Node storage node = _nodes[n];
@@ -304,6 +305,7 @@ contract LeashWallet is ILeashWallet, ReentrancyGuardTransient {
             if (left < r) r = left;
             n = node.parent;
         }
+        return r;
     }
 
     function nodeCount() external view returns (uint256) {
