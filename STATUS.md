@@ -1,27 +1,24 @@
 # Status
 
-Phase: P1 (contract tests, ABI export, services). Updated 14:36 PT. On schedule.
+Phase: P2 (deploy + first real paid call). Updated 14:47 PT. ~25 min ahead of plan.
 
 ## Done
-- Kit, git, pnpm workspace, private repo AnthonyOlakangil/leash-build (empty public `leash` repo exists; untouched)
-- Tooling: node 26, pnpm 12, foundry; Agora MCP added
-- P0 gate PASSED on live AUSD (D-002): cf092995 present, pause bits off, domain "Agora Dollar"/"1"/84532, decimals 6; fork test 5/5; settle gas ~144k
-- Frozen interface: contracts/src/ILeashWallet.sol, docs/INTERFACES.md, @leash/abi
-- DEPLOYER holds 10,000 AUSD (faucet tx 0x996244139de7f84c1086d814013ec0a0369d5ed358372677b7dca6eeec312a05); RELAYER funded 0.00015 ETH (tx 0x941d30ed44d6502c1510065ce48b55b29bb1eac8b0a021bfbc7ae8145486fa8e)
+- P0 gate PASSED on live AUSD (D-002); fork test 5/5
+- P1: 51 unit tests green; ABI exported to packages/abi; golden vectors; council gate 1 passed, no BLOCKERs (D-004)
+- Full stack integration on an anvil fork: all 9 scripted beats + one LLM run (D-006)
+- LeashWallet deployed + verified on Blockscout: 0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c (deployBlock 47993332)
+  - deploy 0x2fdd5b584dd303a394f3e568382bf387f49cc197e7e0546b81363b17c5c0f647
+  - createRoot 0x6310ed5271f401cb01de5574fb2a923b3d3c18e6b4cc804008cb73a0dcb02690
+  - fund 5 AUSD 0xa40802c355addb40714ce601367568a6bad26784276e2bb95814af3372f4bee8
+  - Blockscout: https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c
 
 ## In progress
-- solidity-engineer: unit tests, ABI export, Deploy.s.sol (due 15:05)
-- facilitator-engineer: leash-client, facilitator, seller (due 15:10)
-- frontend-engineer: dashboard (mock first, due 15:15)
-- agent-engineer: agents, DEMO_SCRIPTED first (due 15:15)
-
-## Blockers
-- None. ETH is thin (DEPLOYER ~0.00025, RELAYER 0.00015); optional top-up requested. ELEVENLABS key empty (SHOULD item only).
+- facilitator-engineer: council SHOULD fixes (force path re-checks requirements, front-run, golden-vector TS test)
+- frontend-engineer: feed render bug, 1440x900 fit, node naming
 
 ## Next
-- 15:05 council gate 1 (protocol-auditor), 15:10 P2 deploy
+- First real paid request (402 -> paid -> 200, Paid event) + one decoded block on live chain, push
+- P3: pnpm demo live end to end, LLM mode once
 
-## Addresses
-- AUSD 0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC (Base Sepolia)
-- DEPLOYER 0xd6B7A3469b12be5E93c244a36f73deE7f31fdFdc, RELAYER 0x3138FD3BeB2Bb4c604F5282D73891e6cd40671cB
-- LeashWallet: not deployed
+## Blockers
+- None. ETH: DEPLOYER ~0.000236, RELAYER 0.00015.
