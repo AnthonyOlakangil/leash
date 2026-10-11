@@ -7,6 +7,7 @@ Leash is a spending allowance for AI agents that they can split among sub-agents
 | Item | Value |
 | --- | --- |
 | Source | https://github.com/AnthonyOlakangil/leash |
+| Hosted dashboard (read-only chain view) | https://leash-dashboard-rho.vercel.app |
 | LeashWallet (Base Sepolia) | `0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c` |
 | Verified source (Blockscout) | https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code |
 | Basescan | https://sepolia.basescan.org/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c |
@@ -75,8 +76,9 @@ What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hiera
 | --- | --- |
 | LeashWallet | Deployed and verified on Base Sepolia (address above). |
 | Payments | Real testnet AUSD moves through `settle()`. Example paid `/search` call: https://sepolia.basescan.org/tx/0x92f81d12dbfb1308da96788864dcde293b1068f1039352dbdd35cce1ca005048 |
-| Blocked payment | A `/premium-intel` payment to a non-allowlisted payee reverted onchain with `PayeeNotAllowed(0)`: https://sepolia.basescan.org/tx/0xf1548f0b1fc7ccb4ec7e4aa437cb12a85d883f9c6a13e507b4114bb3e5a36a16 |
-| Direct-to-AUSD bypass | A blocked payment's signature, replayed straight to AUSD, was rejected: https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc |
+| Injection blocked | In a `DEMO_SCRIPTED` run (labeled), searcher-2 read the injected listing and signed a payment to ATTACKER at `/premium-intel`; `settle()` reverted onchain with `PayeeNotAllowed(0)`: https://sepolia.basescan.org/tx/0x3d3952e0e045aaf573b48af2ed3b85f891b2ec9806d81d5df81cbe9fd4914cf6 |
+| Direct-to-AUSD bypass | That same signature, sent straight to `AUSD.transferWithAuthorization`, was rejected by the token: https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc |
+| Budget and pause | `OverBudget(3)`: https://sepolia.basescan.org/tx/0xddec1019f730a54b1fd0ba63f70b49ac51aedf264162b0d7dc2fd464c04eee31 ; `Paused(1)` after pausing the orchestrator: https://sepolia.basescan.org/tx/0x91054593c659ea1e0583c4ba1f847a71708cab8dee41f7e5b65bbe1be4d8b14b |
 | Search and scrape | The seller's `/search` and `/scrape` routes call Context.dev live (stub results are clearly labeled if the API is unavailable). |
 | LLM agents | Live mode uses `claude-sonnet-5-5`, selected at boot from `/v1/models`. |
 | Scripted replay | `DEMO_SCRIPTED` replays the same beats and is labeled `[SCRIPTED]` in logs. |
@@ -89,6 +91,7 @@ What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hiera
 - For the demo, the owner key is held server-side by the facilitator. This is a demo trade-off, not a production design.
 - A hostile sibling that learns a child's key before the legitimate registration can grief that registration. It cannot overspend, because the budget is charged against the whole ancestor chain.
 - The force-broadcast path and `/demo/bypass` are demo-only and unauthenticated.
+- The hosted dashboard is a read-only chain view. Owner controls and the Blocked lane's live events come from the local facilitator, so the full demo runs locally.
 - `createRoot` and `createChild` do not reject an expiry that is already in the past (a child's expiry only has to be at or below its parent's). Such a node can never pay, so this wastes gas but cannot move funds.
 - This is unaudited hackathon code. Do not use it with funds you cannot lose.
 
@@ -123,4 +126,4 @@ Repository layout and the architecture are in [docs/ARCHITECTURE.md](docs/ARCHIT
 
 ## Tracks entered
 
-Hackathon: B@BHacks 2.0 (UC Berkeley). Tracks: Most Technically Impressive, AUSD (Agora), YZi Labs, Context.dev.
+Hackathon: B@BHacks 2.0 (UC Berkeley). Tracks: Most Technically Impressive, Best Use of AUSD, YZi Labs, Context.dev.
