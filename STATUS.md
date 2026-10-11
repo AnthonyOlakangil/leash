@@ -22,3 +22,7 @@ Phase: P2 (deploy + first real paid call). Updated 14:47 PT. ~25 min ahead of pl
 
 ## Blockers
 - None. ETH: DEPLOYER ~0.000236, RELAYER 0.00015.
+
+## P2 proof (14:45)
+- Real paid request: /search 402 -> paid -> 200, Paid event: https://sepolia.basescan.org/tx/0x92f81d12dbfb1308da96788864dcde293b1068f1039352dbdd35cce1ca005048 (gas 144,071)
+- Decoded block: /premium-intel -> settle reverted PayeeNotAllowed(0) onchain: https://sepolia.basescan.org/tx/0xf1548f0b1fc7ccb4ec7e4aa437cb12a85d883f9c6a13e507b4114bb3e5a36a16
