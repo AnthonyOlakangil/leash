@@ -44,7 +44,7 @@ Why this is novel (the only claim we make): ERC-1271 is normally a stateless "di
 - Custom errors: UnknownAgent(address), PayeeNotAllowed(uint256 node) (node 0 = global list), OverPerCall(uint256), OverBudget(uint256), Expired(uint256), Paused(uint256), BelowFloor(), TooDeep(), ChildExceedsParent(), BadDelegation(), KeyInUse(), NotAncestor(), NotOwner().
 - Events: NodeCreated(id, parent, key, cap, maxPerCall, expiry), Paid(id, to, value, nonce), NodePaused(id, by), NodeUnpaused(id), CapRaised(id, oldCap, newCap), AllowSet(payee, allowed).
 - Views: getNode(id), remaining(id) (min over ancestors of cap - spent), nodeCount().
-- Secrets live only in .env (gitignored). Never print private keys to the terminal or logs. Never commit .env. Run `git grep -nE "0x[a-fA-F0-9]{64}"` and a check for API key prefixes before every push.
+- Secrets live only in .env (gitignored). Never print private keys to the terminal or logs. Never cat/read/print .env or any .env.* copy, and never run `env`/`printenv`; check a key's presence with `grep -c '^NAME=.' .env` and load values with `set -a; source .env; set +a` inside the command that needs them. Never commit .env. Run `git grep -nE "0x[a-fA-F0-9]{64}"` and a check for API key prefixes before every push.
 
 ## settle() order (normative)
 1. nonReentrant.
