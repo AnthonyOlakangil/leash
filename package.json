@@ -11,7 +11,8 @@
     "test": "pnpm -r test",
     "services": "concurrently --kill-others-on-fail -n facilitator,seller,dashboard -c green,yellow,cyan \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\"",
     "demo": "concurrently --kill-others-on-fail -n facilitator,seller,dashboard,agents -c green,yellow,cyan,magenta \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\" \"sleep 20 && pnpm --filter agents demo\"",
-    "fresh-wallet": "bash scripts/fresh-wallet.sh"
+    "fresh-wallet": "bash scripts/fresh-wallet.sh",
+    "services:prod": "pnpm --filter dashboard build && concurrently --kill-others-on-fail -n facilitator,seller,dashboard -c green,yellow,cyan \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard exec next start -p 3000\""
   },
   "devDependencies": {
     "concurrently": "^9.1.0",
