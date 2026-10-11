@@ -28,7 +28,7 @@ test("AUSD domain hashes to the live DOMAIN_SEPARATOR (name is 'Agora Dollar', n
   const domain = ausdDomain();
   assert.equal(domain.name, "Agora Dollar");
   const sep = hashDomain({
-    domain,
+    domain: { ...domain, chainId: BigInt(domain.chainId) },
     types: { EIP712Domain: [
       { name: "name", type: "string" },
       { name: "version", type: "string" },
