@@ -46,3 +46,6 @@ Consequences: hosted owner buttons and the off-chain Blocked lane events need th
 
 ## D-011 Pre-public secret scan (15:11)
 Decision: no history rewrite needed. No sk-ant or Context.dev key prefix, and no .env secret value (API keys, ADMIN_TOKEN, deployer/relayer/root private keys) appears in any commit. The 45 unique 64-hex strings in history are tx hashes, typehashes, storage slots, event topics, the domain separator, and a public test-only golden key; none derives to a project account. .env, .env.fork and apps/agents/.keys.json were never committed. Added deny rules for reading/printing .env to .claude/settings.json and CLAUDE.md.
+
+## D-012 Control-room UI polish (15:37)
+Decision: styling-only pass (frontend-engineer, commit 947a38c) plus two display fixes by the lead: the PAUSED badge no longer covers spent/cap amounts, and facilitator owner-action/delegation events already present in chain logs are no longer shown twice. Verified with Playwright screenshots at 1440x900 against a throwaway wallet after a full scripted run (live SSE, Blocked lane filled) and the empty recording state. Recording uses `pnpm services:prod` (built dashboard, no dev overlay). New recording wallet 0x01a38451fdE9CeA24cDF3Ee212af6b0950645417 (verified); Vercel redeployed to it.

@@ -1,12 +1,12 @@
 {
   "chainId": 84532,
   "ausd": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
-  "leashWallet": "0x79a443e6677C8324848a127201953b54374e971A",
-  "deployBlock": 47993972,
+  "leashWallet": "0x01a38451fdE9CeA24cDF3Ee212af6b0950645417",
+  "deployBlock": 47994933,
   "txs": {
-    "deploy": "0x44524fb8426bb56678fc5114495d6318fe7fad92ad2705ee7127ecb4e5d64fc0",
-    "setAllowSearch": "0x3aa522355abf3c8b92ec7506dc8e10237ad594db83466098faa9e457cd24c1c8",
-    "setAllowScrape": "0x8edb0a7a06ad96228a5cb83c9d59ac5c791ca09c6a3f5c5cce79d6680d2ca04b",
-    "fund": "0xaadb033b9ee8217fb0ecfa0d4e56a7720259b096d471ec7d1a13912579a61bcb"
+    "deploy": "0x171a591b65a855e926d531d4d75cbfe071282fc6b118dff12ef8f2f767eb02d7",
+    "setAllowSearch": "0xe7c63a353a1210e5bbbe233e15cd1218c10a852cdd4f04582fafb96e8d8dc894",
+    "setAllowScrape": "0x5980f7cd475b35d6243f833830701f251859eb5f8f9cbfd70e35a9580964e880",
+    "fund": "0x7b1ac9c51aed01e08db5b4224ef9bf06094a01de28886d704ac18e56faddd7a9"
   }
 }
