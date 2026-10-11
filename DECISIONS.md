@@ -15,3 +15,14 @@ Consequences: bypass demo beat (5) is live. ETH budget: relayer funded with 0.00
 ## D-003 Errors for edge cases inside the frozen interface (14:35)
 Decision: invalid keys (zero/owner/wallet/reused) revert KeyInUse; owner actions on a nonexistent node revert UnknownAgent(address(0)); createChild under a paused/expired parent reverts Paused/Expired.
 Rationale: no new error types after the interface freeze.
+
+## D-004 Council gate 1 result (14:44)
+Decision: gate passed, no BLOCKERs. Contract checklist items 1-5 OK. Fixing off-chain SHOULDs now: (1) force-broadcast must not skip payTo/amount/asset/from checks in /settle, (2) front-run detection in all blocked branches, (3) TS golden-vector test incl. PauseChild. NITs accepted as known limitations (README): child-key capture by a hostile sibling is griefing-only; createRoot lacks sanity requires (owner-only); force/bypass endpoints unauthenticated (demo only).
+Rationale: none of the NITs can move funds outside a node's policy; contract redeploy not needed.
+
+## D-005 Public RPC getLogs limit (14:44)
+Decision: all log queries use <= 190-block chunks starting at deployBlock.
+Rationale: sepolia.base.org rejects eth_getLogs spans over 200 blocks; found by running the dashboard live against an anvil fork.
+
+## D-006 Fork integration before live deploy (14:40)
+Decision: run the full stack (facilitator, seller, agents scripted + LLM, dashboard) against an anvil fork of Base Sepolia with real AUSD before spending live gas. All 9 scripted beats passed; LLM mode completed (model declined the injection on its own; scripted mode demonstrates the onchain block). Found and fixed: forced tool_choice unsupported by claude-sonnet-5-5; getLogs range.
