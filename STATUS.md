@@ -1,20 +1,27 @@
 # Status
 
-Phase: P0 (scaffold + gate). Started 14:27 PT (7 min behind plan).
+Phase: P1 (contract tests, ABI export, services). Updated 14:36 PT. On schedule.
 
 ## Done
-- Kit files, git init, pnpm workspace scaffold
+- Kit, git, pnpm workspace, private repo AnthonyOlakangil/leash-build (empty public `leash` repo exists; untouched)
+- Tooling: node 26, pnpm 12, foundry; Agora MCP added
+- P0 gate PASSED on live AUSD (D-002): cf092995 present, pause bits off, domain "Agora Dollar"/"1"/84532, decimals 6; fork test 5/5; settle gas ~144k
+- Frozen interface: contracts/src/ILeashWallet.sol, docs/INTERFACES.md, @leash/abi
+- DEPLOYER holds 10,000 AUSD (faucet tx 0x996244139de7f84c1086d814013ec0a0369d5ed358372677b7dca6eeec312a05); RELAYER funded 0.00015 ETH (tx 0x941d30ed44d6502c1510065ce48b55b29bb1eac8b0a021bfbc7ae8145486fa8e)
 
 ## In progress
-- Foundry install, P0 gate checks on live AUSD, parallel scaffolds
+- solidity-engineer: unit tests, ABI export, Deploy.s.sol (due 15:05)
+- facilitator-engineer: leash-client, facilitator, seller (due 15:10)
+- frontend-engineer: dashboard (mock first, due 15:15)
+- agent-engineer: agents, DEMO_SCRIPTED first (due 15:15)
 
 ## Blockers
-- DEPLOYER has only 0.0004 Base Sepolia ETH; RELAYER has 0. More ETH requested from user.
+- None. ETH is thin (DEPLOYER ~0.00025, RELAYER 0.00015); optional top-up requested. ELEVENLABS key empty (SHOULD item only).
 
 ## Next
-- P0 gate decision at 14:35-14:45
+- 15:05 council gate 1 (protocol-auditor), 15:10 P2 deploy
 
 ## Addresses
 - AUSD 0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC (Base Sepolia)
-- DEPLOYER 0xd6B7A3469b12be5E93c244a36f73deE7f31fdFdc
+- DEPLOYER 0xd6B7A3469b12be5E93c244a36f73deE7f31fdFdc, RELAYER 0x3138FD3BeB2Bb4c604F5282D73891e6cd40671cB
 - LeashWallet: not deployed
