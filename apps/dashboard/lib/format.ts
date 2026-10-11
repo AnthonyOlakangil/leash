@@ -6,7 +6,7 @@ export function fmt(v: string | bigint | undefined, decimals: number, max = 4): 
   const frac = f.slice(0, max).replace(/0+$/, "").padEnd(2, "0");
   return `${i}.${frac}`;
 }
-export function short(a?: string) { return a ? `${a.slice(0, 6)}...${a.slice(-4)}` : ""; }
+export function short(a?: string) { return a ? `${a.slice(0, 6)}…${a.slice(-4)}` : ""; }
 export function countdown(expirySec: number, nowMs: number): string {
   let s = Math.floor(expirySec - nowMs / 1000);
   if (s <= 0) return "expired";
