@@ -1,0 +1,24 @@
+{
+  "name": "agents",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "DEMO_SCRIPTED=1 tsx src/index.ts",
+    "live": "tsx src/index.ts",
+    "check-model": "tsx src/index.ts --check-model",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@leash/abi": "workspace:*",
+    "@leash/client": "workspace:*",
+    "dotenv": "^16.4.5",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
