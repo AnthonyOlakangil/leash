@@ -134,7 +134,7 @@ export default function Dashboard() {
         agent: e.nodeId ? nameOf(e.nodeId) : bypass ? "Direct call" : "Unknown",
         counterparty: bypass ? "AUSD" : label(e.payee, e.payeeLabel),
         amount: e.amount, tx: e.txHash, pill: bypass ? "Rejected" : "Blocked",
-        reason: bypass ? `AUSD rejected direct submission. ${e.error?.reason ?? "The signature is only valid inside Leash settle()"}` : e.error?.reason ?? REASONS[name] ?? name,
+        reason: bypass ? "AUSD rejected direct submission outside Leash settle()" : e.error?.reason ?? REASONS[name] ?? name,
         code: `${name}(${e.error?.args?.join(", ") ?? ""})`,
       });
     }
