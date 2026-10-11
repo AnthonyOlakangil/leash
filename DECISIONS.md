@@ -30,3 +30,11 @@ Decision: run the full stack (facilitator, seller, agents scripted + LLM, dashbo
 ## D-007 Stale reads on the public RPC (14:48)
 Decision: agents wait until getNode reflects an owner unpause (+3s), and facilitator retries a failed delegate/admin simulation once after 2.5s. Payments are unaffected (demo payments use forceBroadcast, so the chain decides).
 Rationale: first live LLM run failed createChild with Paused(1) right after a mined unpause; sepolia.base.org is load-balanced and one backend can lag a block.
+
+## D-008 Fresh wallet per recording; rehearsal found a stale-read expiry bug (14:58)
+Decision: `pnpm fresh-wallet` deploys a new LeashWallet (payees allowlisted, 5 AUSD, no root) so beat 1 creates the root on camera and all bars start empty. The original verified deployment 0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c stays the canonical address in the README.
+Rationale: the first one-command rehearsal on a fresh wallet read the just-created root as an empty node (stale RPC backend), so children were delegated with expiry 0 and every payment correctly reverted Expired(node) onchain. Fixed in agents (wait for the root to be visible, refuse past expiry). Second rehearsal: all 9 beats passed.
+Consequences: the contract accepts a child expiry already in the past (it is <= parent); harmless (that child can never pay), listed as a known limitation.
+
+## D-009 SHOULD items (15:02)
+Decision: raise-cap step-up ships (dashboard "Raise cap" button + scripted beat 8). ElevenLabs TTS cut: no ELEVENLABS_API_KEY / VOICE_ID. Vercel dashboard: pending user `vercel login`; a hosted dashboard would run chain-only (no local facilitator SSE, no owner buttons).

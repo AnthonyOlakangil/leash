@@ -1,6 +1,6 @@
 # Status
 
-Phase: P3 (demo end to end). Updated 14:50 PT. ~45 min ahead of plan.
+Phase: P3 complete, pre-freeze. Updated 15:02 PT. ~60 min ahead of plan.
 
 ## Done
 - P0 gate PASSED on live AUSD (D-002); fork test 5/5
@@ -31,3 +31,9 @@ Phase: P3 (demo end to end). Updated 14:50 PT. ~45 min ahead of plan.
 - Scripted demo (all 9 beats) ran on Base Sepolia live: log /tmp/live-demo-1.log. Bypass tx to AUSD reverted (status 0): https://sepolia.basescan.org/tx/0xfe6134808d686cf39f454c843ff6cd3453856bfeef7f2733b7ab1e9c9ef94bfc ; ATTACKER balance 0.
 - LLM mode ran on Base Sepolia live (claude-sonnet-5-5): 3 sub-agents paid searches/scrapes; restricted searcher-3 chose /scrape and was blocked onchain PayeeNotAllowed(7); its signature replayed to AUSD and rejected.
 - Remaining: dashboard fixes in progress; pnpm demo one-command run; docs; fresh wallet for recording.
+
+## P3 complete (15:00)
+- One-command `pnpm demo` from a fresh wallet (0xA640C2584eB903fA85E48B1cBa9aF85bC5CA960c): all 9 beats passed (log /tmp/rehearsal2.log)
+- LLM mode completed on live chain (14:49)
+- Dashboard: tree, feed with Basescan links, paused states, cap raise; Blocked lane via facilitator SSE
+- Next: demo-director review + docs/DEMO.md, fresh wallet for recording, READY TO RECORD
