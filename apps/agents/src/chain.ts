@@ -41,6 +41,7 @@ export function atomic(amount: string, decimals: number): bigint {
 export const payeesHash = (payees: Address[]): Hex => keccak256(encodePacked(["address[]"], [payees]));
 
 export async function signCreateChild(env: Env, parent: PrivateKeyAccount, parentId: bigint, c: Child, expiry: bigint): Promise<DelegationPayload & { message: Record<string, string> }> {
+  if (expiry <= nowSec()) throw new Error(`refusing to delegate ${c.name} with an expiry in the past (${expiry})`);
   const nonce = randomUint256();
   const deadline = nowSec() + 600n;
   const message = {

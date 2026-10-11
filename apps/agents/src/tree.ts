@@ -46,7 +46,15 @@ export async function ensureRoot(ctx: Pick<Ctx, "env" | "pc" | "decimals" | "roo
   } else {
     log(`root already exists as node ${id}`);
   }
-  const node = await getNode(pc, env, id);
+  // The public RPC is load-balanced: right after createRoot a read can return the empty node (expiry 0),
+  // which would sign children that are already expired. Wait until the node is visible.
+  let node = await getNode(pc, env, id);
+  for (let i = 0; i < 20 && node.key.toLowerCase() !== root.address.toLowerCase(); i++) {
+    await new Promise((res) => setTimeout(res, 1000));
+    node = await getNode(pc, env, id);
+  }
+  if (node.key.toLowerCase() !== root.address.toLowerCase()) throw new Error(`root node ${id} not visible on the RPC yet; re-run`);
+  if (node.expiry <= BigInt(Math.floor(Date.now() / 1000))) throw new Error(`root node ${id} is expired (expiry ${node.expiry})`);
   if (node.paused) {
     log(`root node ${id} is paused from a previous run; owner unpauses it`);
     const r = await adminPost(env, "/admin/unpause", { id });
