@@ -3,12 +3,15 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.18.0",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "services": "concurrently -k -n facilitator,seller,dashboard -c green,yellow,cyan \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\"",
-    "demo": "concurrently -k -n facilitator,seller,dashboard,agents -c green,yellow,cyan,magenta \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\" \"sleep 8 && pnpm --filter agents demo\""
+    "services": "concurrently --kill-others-on-fail -n facilitator,seller,dashboard -c green,yellow,cyan \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\"",
+    "demo": "concurrently --kill-others-on-fail -n facilitator,seller,dashboard,agents -c green,yellow,cyan,magenta \"pnpm --filter facilitator dev\" \"pnpm --filter seller dev\" \"pnpm --filter dashboard dev\" \"sleep 20 && pnpm --filter agents demo\"",
+    "fresh-wallet": "bash scripts/fresh-wallet.sh"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",
