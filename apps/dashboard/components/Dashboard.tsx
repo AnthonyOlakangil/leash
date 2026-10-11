@@ -94,7 +94,7 @@ export default function Dashboard() {
     return items.sort((a, b) => b.ts - a.ts).slice(0, 9);
   }, [state.logs, events, state.labels, d]);
 
-  const blocked = useMemo(() => events.filter((e) => e.kind === "blocked" || e.kind === "bypass").sort((a, b) => b.ts - a.ts).slice(0, 6), [events]);
+  const blocked = useMemo(() => events.filter((e) => e.kind === "blocked" || e.kind === "bypass").sort((a, b) => b.ts - a.ts).slice(0, 8), [events]);
   const nodes = state.nodes;
   const roots = nodes.filter((n) => n.parent === "0").slice(-1); // latest root only
   const childrenOf = (id: number) => nodes.filter((n) => n.parent === String(id)).slice(-3); // 3 most recent

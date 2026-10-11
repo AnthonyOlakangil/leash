@@ -50,4 +50,7 @@ mkdir -p data/archive
 [ -f data/events.jsonl ] && mv data/events.jsonl "data/archive/events.$(date +%H%M%S).jsonl" || true
 rm -f apps/agents/.keys.json
 echo "fresh LeashWallet $W (block $BLOCK), funded 5 AUSD, payees allowlisted, no root yet"
+(cd contracts && forge verify-contract "$W" src/LeashWallet.sol:LeashWallet --chain 84532 --verifier blockscout \
+  --verifier-url https://base-sepolia.blockscout.com/api/ --constructor-args "$(cast abi-encode 'constructor(address,address)' "$AUSD_ADDRESS" "$DEPLOYER_ADDRESS")" --watch \
+  | tail -1) || echo "verification failed; retry with the command below"
 echo "verify: cd contracts && forge verify-contract $W src/LeashWallet.sol:LeashWallet --chain 84532 --verifier blockscout --verifier-url https://base-sepolia.blockscout.com/api/ --constructor-args \$(cast abi-encode 'constructor(address,address)' $AUSD_ADDRESS $DEPLOYER_ADDRESS)"
