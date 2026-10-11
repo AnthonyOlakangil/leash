@@ -6,6 +6,7 @@ Leash is a spending allowance for AI agents that they can split among sub-agents
 
 | Item | Value |
 | --- | --- |
+| Source | https://github.com/AnthonyOlakangil/leash |
 | LeashWallet (Base Sepolia) | `0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c` |
 | Verified source (Blockscout) | https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code |
 | Basescan | https://sepolia.basescan.org/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c |
