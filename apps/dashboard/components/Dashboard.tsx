@@ -86,10 +86,12 @@ export default function Dashboard() {
       else if (l.kind === "NodeUnpaused") items.push({ key: l.txHash + l.logIndex, ts: l.ts, tone: "admin", title: `${nameOf(l.id)} unpaused`, tx: l.txHash });
       else if (l.kind === "CapRaised") items.push({ key: l.txHash + l.logIndex, ts: l.ts, tone: "admin", title: `${nameOf(l.id)} cap raised`, sub: `${fmt(l.oldCap, d)} to ${fmt(l.newCap, d)} AUSD`, tx: l.txHash });
     }
+    const chainTx = new Set(state.logs.map((l) => l.txHash));
     for (const e of events) {
       if (e.kind === "paid" && !(e.txHash && seen.has(e.txHash)))
         items.push({ key: e.id, ts: e.ts, tone: "paid", title: `${nameOf(e.nodeId ?? "")} paid ${label(e.payee, e.payeeLabel)}`, amount: e.amount, tx: e.txHash });
-      else if (e.kind === "delegation" || e.kind === "admin")
+      // Facilitator events for owner actions and delegations duplicate the chain logs above; show only ones not yet on chain (e.g. failures).
+      else if ((e.kind === "delegation" || e.kind === "admin") && !(e.txHash && chainTx.has(e.txHash)))
         items.push({ key: e.id, ts: e.ts, tone: "info", title: e.detail ?? e.kind, tx: e.txHash });
     }
     return items.sort((a, b) => b.ts - a.ts);
@@ -297,7 +299,7 @@ function NodeCard({ n, name, d, now, labels, onAct, parentPaused, root }: { n: C
         {n.paused ? <Btn onClick={() => onAct("unpause", n.id)}><Play size={11} />Unpause</Btn> : <Btn onClick={() => onAct("pause", n.id)} danger><Pause size={11} />Pause</Btn>}
         <Btn onClick={() => onAct("raiseCap", n.id)} amber><TrendingUp size={11} />Raise cap</Btn>
       </span>
-      {paused && <span className="absolute right-3 top-2 rounded bg-slate-600 text-slate-100 px-2 py-0.5 text-xs font-semibold tracking-wider">{n.paused ? "PAUSED" : "PARENT PAUSED"}</span>}
+      {paused && <span className="absolute left-1/2 top-[57%] -translate-x-1/2 -translate-y-1/2 rounded bg-slate-600 text-slate-100 px-2 py-0.5 text-xs font-semibold tracking-wider shadow-lg">{n.paused ? "PAUSED" : "PARENT PAUSED"}</span>}
     </div>
   );
 }

@@ -19,3 +19,5 @@ contracts/lib/
 skills-lock.json
 .env.fork
 .vercel
+.env.*
+!.env.example
