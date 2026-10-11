@@ -38,15 +38,18 @@ async function blockTs(n: bigint) {
   return t;
 }
 
+const LOG_CHUNK = 190n;
+
 async function syncLogs(wallet: Address) {
   const c = pc();
   const latest = await c.getBlockNumber();
   if (cache.next === 0n) {
     const dep = BigInt((deployment as any).deployBlock || 0);
-    cache.next = dep > 0n ? dep : latest > 9000n ? latest - 9000n : 0n;
+    cache.next = dep > 0n ? dep : latest > 1500n ? latest - 1500n : 0n;
   }
   while (cache.next <= latest) {
-    const to = cache.next + 9000n < latest ? cache.next + 9000n : latest;
+    // Public Base Sepolia RPC caps eth_getLogs at a 200-block range.
+    const to = cache.next + LOG_CHUNK < latest ? cache.next + LOG_CHUNK : latest;
     const logs = await c.getContractEvents({ address: wallet, abi: leashWalletAbi, fromBlock: cache.next, toBlock: to });
     for (const l of logs as any[]) {
       const a = l.args ?? {};
