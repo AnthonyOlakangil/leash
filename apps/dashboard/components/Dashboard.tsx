@@ -187,6 +187,7 @@ export default function Dashboard() {
     const n = nodes.find((x) => x.id === id)!;
     const newCap = action === "raiseCap" ? String(BigInt(n.cap) + 250_000n) : undefined;
     if (replaying) setToast("The replay is read-only. Exit the replay to act on the live wallet.");
+    else if (REPLAY_ENABLED) setToast("Owner actions need the owner key, which stays on the builder’s laptop. They work in the local demo.");
     else if (state.mode === "mock") { mockRef.current = { ...mockRef.current, state: mockAdmin(mockRef.current.state, action, id, newCap) }; setState(mockRef.current.state); setToast(`${action} node ${id} (mock)`); }
     else {
       const r = await fetch("/api/admin", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, id, newCap }) }).then((x) => x.json()).catch(() => ({ ok: false, error: "network" }));
@@ -218,6 +219,12 @@ export default function Dashboard() {
             </span>
           ))}
         </nav>
+        {REPLAY_ENABLED && (
+          <p className="mt-auto px-2 text-[12px] leading-[18px] text-fg3">
+            <span className="block mb-1 font-medium text-fg2">Why no live run here?</span>
+            Running the agents signs real transactions with the owner and agent keys. For security those keys stay on the builder’s laptop, so this public site shows the wallet and a recorded replay. Replayed rows link to the real transactions.
+          </p>
+        )}
       </aside>
 
       <div className="flex-1 min-w-0 flex flex-col">
