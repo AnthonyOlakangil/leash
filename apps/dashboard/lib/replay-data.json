@@ -1,0 +1,443 @@
+{
+ "wallet": "0x7c37Cf64c2D7757f943cD4182e4e21ac91896810",
+ "deployBlock": 47997939,
+ "decimals": 6,
+ "startBalance": "5000000",
+ "labels": {
+  "0xc7ab8dd5dcef9c390dd80024387543362b94dc56": "Search API",
+  "0x9de7c2bf0510e271b8598b6ec492ab77d6f8c29f": "Scrape API",
+  "0x3449a21ed80283b0d55c0243b52d5dd687444dda": "ATTACKER"
+ },
+ "nodes": [
+  {
+   "id": 1,
+   "key": "0x4C70C514FeF0423275e6eee8c4E4A9c74663a256",
+   "parent": "0",
+   "depth": "0",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "restricted": false
+  },
+  {
+   "id": 2,
+   "key": "0x2f20856E174ebF0aD3E7D88c6fF398c9247CEe5d",
+   "parent": "1",
+   "depth": "1",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "restricted": false
+  },
+  {
+   "id": 3,
+   "key": "0xec35F50Ad07809B507c92538a4Cdee19B1039757",
+   "parent": "1",
+   "depth": "1",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "restricted": false
+  },
+  {
+   "id": 4,
+   "key": "0xd46a42ff4afA3a115344dD6ED45b781609aD63EB",
+   "parent": "1",
+   "depth": "1",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "restricted": true
+  }
+ ],
+ "logs": [
+  {
+   "kind": "NodeCreated",
+   "id": "1",
+   "parent": "0",
+   "key": "0x4C70C514FeF0423275e6eee8c4E4A9c74663a256",
+   "cap": "1000000",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "txHash": "0x175de6ddf9b40cf64a9dd028aab43aa88987ec53c267dd13bd2ef3e8396f79aa",
+   "ts": 1791764318000,
+   "logIndex": 1133
+  },
+  {
+   "kind": "NodeCreated",
+   "id": "2",
+   "parent": "1",
+   "key": "0x2f20856E174ebF0aD3E7D88c6fF398c9247CEe5d",
+   "cap": "250000",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "txHash": "0xe44591526ab703ab0958ca9b8cd85b4a92cc78e2b5fff64ed2efb3bacb6df6a4",
+   "ts": 1791764324000,
+   "logIndex": 16
+  },
+  {
+   "kind": "NodeCreated",
+   "id": "3",
+   "parent": "1",
+   "key": "0xec35F50Ad07809B507c92538a4Cdee19B1039757",
+   "cap": "250000",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "txHash": "0x7f23cffeadeead778b432438dcecf7cb39e3f5a7f5f7a3ba3970e482ceb9141f",
+   "ts": 1791764324000,
+   "logIndex": 76
+  },
+  {
+   "kind": "NodeCreated",
+   "id": "4",
+   "parent": "1",
+   "key": "0xd46a42ff4afA3a115344dD6ED45b781609aD63EB",
+   "cap": "250000",
+   "maxPerCall": "100000",
+   "expiry": "1791788340",
+   "txHash": "0xd61e68f5d82f0856677991369db04211429e9728ff2eb21bf873a279f3e152b4",
+   "ts": 1791764326000,
+   "logIndex": 148
+  },
+  {
+   "kind": "Paid",
+   "id": "2",
+   "to": "0xC7AB8dD5dCef9c390Dd80024387543362b94dc56",
+   "value": "20000",
+   "nonce": "0x096b9f815c306defba1153093d51d9e733ff3ddeb0565d17bcb11fd90b13d65d",
+   "txHash": "0xc1e64bd30a7bda3ee2dee76eff3f707c012cb30b429a5a6226f4f63f22da5cb3",
+   "ts": 1791764330000,
+   "logIndex": 146
+  },
+  {
+   "kind": "Paid",
+   "id": "2",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0xe43f20bedc4566d1776b7a0984ca913a8f322426edae7b7fc5045eb565a2472d",
+   "txHash": "0x1f79b97b847c4b2b5c685e2de54ccd576b521d196cb5a07bb2538d3b34f8ed1c",
+   "ts": 1791764334000,
+   "logIndex": 201
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0xC7AB8dD5dCef9c390Dd80024387543362b94dc56",
+   "value": "20000",
+   "nonce": "0xaadd13cfce064ef2d88a47eda830050a945e6c948fff43be42b474736a8dd462",
+   "txHash": "0x5d549a44f33f3c157f01c061453121e77ffcd5a02381ae200d117855e3eaeaee",
+   "ts": 1791764336000,
+   "logIndex": 158
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0x08f3c087034369d164112696f2a5e3473fa4dcf37655f59c00cc73166c3ec05b",
+   "txHash": "0x259a4f460a372f1bb1ea180ad744249568487ce0844d897eb131c1b0153bc87e",
+   "ts": 1791764342000,
+   "logIndex": 13
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0x5aeacb4a88de2049021f44f9c484f2a63ea7df3ee6a90d03bb9f9d80e36fdf77",
+   "txHash": "0x5de63295069178cd9d6cf8b4f5e814c196b57f8b7cb014be84df55182ba379b3",
+   "ts": 1791764354000,
+   "logIndex": 66
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0x8bc044ff9387d9a3509d175567ec814a1aa384b3a8f01d59d0106cd499c00fdc",
+   "txHash": "0xf356687bc36ad9a99feb1c206bb9c9a02c23827a36ea8078fae0ccf86803b10b",
+   "ts": 1791764356000,
+   "logIndex": 93
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0x715e65abef38cae5fc1504d588979ad77bc8da1801090d2c8fe2b7539d395bb4",
+   "txHash": "0xfcd3089cfcdc035cc8a198a0fdf2a77b6a42da8a400d0630e2347053647dd6fb",
+   "ts": 1791764358000,
+   "logIndex": 152
+  },
+  {
+   "kind": "CapRaised",
+   "id": "3",
+   "oldCap": "250000",
+   "newCap": "400000",
+   "txHash": "0x28e6e1487217accd6890292aa3909623547006c306cfd62ddc052d2acfb1aad5",
+   "ts": 1791764364000,
+   "logIndex": 172
+  },
+  {
+   "kind": "Paid",
+   "id": "3",
+   "to": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "value": "50000",
+   "nonce": "0x7b401d626a49dae65b7bef42100b5252ea2a60e001c37834fbf49aa20431bd72",
+   "txHash": "0xc5f61947593bda5fc0945059f6461701f221e0493a63be8bcecea50a7a940576",
+   "ts": 1791764366000,
+   "logIndex": 182
+  },
+  {
+   "kind": "NodePaused",
+   "id": "1",
+   "by": "0xd6B7A3469b12be5E93c244a36f73deE7f31fdFdc",
+   "txHash": "0x16d002e927a61853e948d41b18b525068c076b61e0d4e690b6e72f607c614f0b",
+   "ts": 1791764370000,
+   "logIndex": 4
+  }
+ ],
+ "events": [
+  {
+   "id": "9baa5674-63ca-4441-b941-7265d5286756",
+   "ts": 1791764316643,
+   "kind": "admin",
+   "nodeId": "1",
+   "txHash": "0x175de6ddf9b40cf64a9dd028aab43aa88987ec53c267dd13bd2ef3e8396f79aa",
+   "detail": "createRoot (node 1)"
+  },
+  {
+   "id": "7a5132b4-abd2-44a0-a2c0-00605ce09172",
+   "ts": 1791764322340,
+   "kind": "delegation",
+   "nodeId": "2",
+   "txHash": "0xe44591526ab703ab0958ca9b8cd85b4a92cc78e2b5fff64ed2efb3bacb6df6a4",
+   "detail": "createChild under node 1 (node 2)"
+  },
+  {
+   "id": "14ab1601-0d5d-47dc-b6ec-be7398f1fc70",
+   "ts": 1791764324061,
+   "kind": "delegation",
+   "nodeId": "3",
+   "txHash": "0x7f23cffeadeead778b432438dcecf7cb39e3f5a7f5f7a3ba3970e482ceb9141f",
+   "detail": "createChild under node 1 (node 3)"
+  },
+  {
+   "id": "168b797c-a0b3-496d-9d8e-728e3dbe924d",
+   "ts": 1791764325504,
+   "kind": "delegation",
+   "nodeId": "4",
+   "txHash": "0xd61e68f5d82f0856677991369db04211429e9728ff2eb21bf873a279f3e152b4",
+   "detail": "createChild under node 1 (node 4)"
+  },
+  {
+   "id": "fc443804-49dd-44a4-9f8f-c1a44dee40d8",
+   "ts": 1791764328737,
+   "kind": "paid",
+   "nodeId": "2",
+   "payee": "0xC7AB8dD5dCef9c390Dd80024387543362b94dc56",
+   "payeeLabel": "Search API",
+   "amount": "20000",
+   "txHash": "0xc1e64bd30a7bda3ee2dee76eff3f707c012cb30b429a5a6226f4f63f22da5cb3"
+  },
+  {
+   "id": "c6dcc072-9a54-4407-be08-42cbbf8278ff",
+   "ts": 1791764333265,
+   "kind": "paid",
+   "nodeId": "2",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0x1f79b97b847c4b2b5c685e2de54ccd576b521d196cb5a07bb2538d3b34f8ed1c"
+  },
+  {
+   "id": "df7da056-f7cc-40ec-b25a-872711e7afca",
+   "ts": 1791764335094,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0xC7AB8dD5dCef9c390Dd80024387543362b94dc56",
+   "payeeLabel": "Search API",
+   "amount": "20000",
+   "txHash": "0x5d549a44f33f3c157f01c061453121e77ffcd5a02381ae200d117855e3eaeaee"
+  },
+  {
+   "id": "20b5d0cd-3e79-4060-bda1-df3de0e07127",
+   "ts": 1791764340239,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0x259a4f460a372f1bb1ea180ad744249568487ce0844d897eb131c1b0153bc87e"
+  },
+  {
+   "id": "fdd9c6da-9912-4840-a674-11fe0e754e9c",
+   "ts": 1791764343038,
+   "kind": "blocked",
+   "nodeId": "3",
+   "payee": "0x3449a21Ed80283b0D55C0243b52D5dd687444ddA",
+   "payeeLabel": "ATTACKER",
+   "amount": "50000",
+   "txHash": "0x136be4ee2250cfd36e972595115983e0401bf126657b5983110eee40c242727d",
+   "error": {
+    "name": "PayeeNotAllowed",
+    "args": [
+     "0"
+    ],
+    "reason": "Recipient is not on this agent's allowlist"
+   }
+  },
+  {
+   "id": "9fa69d57-f130-4462-9ca5-1a504a529c0d",
+   "ts": 1791764346226,
+   "kind": "bypass",
+   "payee": "0x3449a21Ed80283b0D55C0243b52D5dd687444ddA",
+   "payeeLabel": "ATTACKER",
+   "amount": "50000",
+   "nodeId": "3",
+   "txHash": "0x725ab7e861be6b796a1230cbed9118ea9935e61e0aac27d16d78c7d71367e2ae",
+   "error": {
+    "name": "BypassRejected",
+    "args": [],
+    "reason": "AUSD rejected it: the signature is only valid inside Leash settle()"
+   }
+  },
+  {
+   "id": "58c5026d-4273-4a7c-8b8e-43bbb745a71c",
+   "ts": 1791764349396,
+   "kind": "blocked",
+   "nodeId": "4",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0xbb0c5e26db479d67e47e36b7ff3c763ee50bcd5b30be69358f388cde0fcff76a",
+   "error": {
+    "name": "PayeeNotAllowed",
+    "args": [
+     "4"
+    ],
+    "reason": "Recipient is not on this agent's allowlist"
+   }
+  },
+  {
+   "id": "7a92ec46-5dfb-4ff7-8ac0-70cdddf481cc",
+   "ts": 1791764352627,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0x5de63295069178cd9d6cf8b4f5e814c196b57f8b7cb014be84df55182ba379b3"
+  },
+  {
+   "id": "323ca89d-eb0b-407b-a5e7-d0010f420c19",
+   "ts": 1791764354592,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0xf356687bc36ad9a99feb1c206bb9c9a02c23827a36ea8078fae0ccf86803b10b"
+  },
+  {
+   "id": "13815856-5a83-4e99-975d-1f251c656897",
+   "ts": 1791764356668,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0xfcd3089cfcdc035cc8a198a0fdf2a77b6a42da8a400d0630e2347053647dd6fb"
+  },
+  {
+   "id": "773867d2-7221-46a1-ab4c-945bf48c54df",
+   "ts": 1791764359246,
+   "kind": "blocked",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0x82c1b25ce00c1b6d5cf3a538cdb40f9fe14e6c8ad5ca74132a695167e0990343",
+   "error": {
+    "name": "OverBudget",
+    "args": [
+     "3"
+    ],
+    "reason": "Agent budget exhausted"
+   }
+  },
+  {
+   "id": "23f59cee-3993-4ab2-b6f0-5f320f5bb8c3",
+   "ts": 1791764363090,
+   "kind": "admin",
+   "nodeId": "3",
+   "txHash": "0x28e6e1487217accd6890292aa3909623547006c306cfd62ddc052d2acfb1aad5",
+   "detail": "raiseCap node 3 to 400000"
+  },
+  {
+   "id": "d845a679-a470-408f-b3a3-5e4f8a942ce6",
+   "ts": 1791764365066,
+   "kind": "paid",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0xc5f61947593bda5fc0945059f6461701f221e0493a63be8bcecea50a7a940576"
+  },
+  {
+   "id": "d546f646-20f1-44e4-8f04-98efd9158bda",
+   "ts": 1791764368161,
+   "kind": "admin",
+   "nodeId": "1",
+   "txHash": "0x16d002e927a61853e948d41b18b525068c076b61e0d4e690b6e72f607c614f0b",
+   "detail": "pause node 1"
+  },
+  {
+   "id": "c1462634-3a5c-4e52-884c-8f6edb8cdc84",
+   "ts": 1791764370362,
+   "kind": "blocked",
+   "nodeId": "2",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0xcedb9e988aaf56a92e0b38a3b9994441bf1aabd010e944fc0280a0ef0f86b7b7",
+   "error": {
+    "name": "Paused",
+    "args": [
+     "1"
+    ],
+    "reason": "Agent or a parent is paused"
+   }
+  },
+  {
+   "id": "b0206221-57d7-433d-bebe-2b0536055a91",
+   "ts": 1791764371373,
+   "kind": "blocked",
+   "nodeId": "3",
+   "payee": "0x9dE7c2bF0510E271b8598b6Ec492AB77D6F8C29F",
+   "payeeLabel": "Scrape API",
+   "amount": "50000",
+   "txHash": "0x8a3eea3ce4f37dfc61edb47b14652ba0de352458ab4adbae178e264f805ba35f",
+   "error": {
+    "name": "Paused",
+    "args": [
+     "1"
+    ],
+    "reason": "Agent or a parent is paused"
+   }
+  },
+  {
+   "id": "aaffd6d9-2277-4b98-9352-cbb33d3eee51",
+   "ts": 1791764372723,
+   "kind": "blocked",
+   "nodeId": "4",
+   "payee": "0xC7AB8dD5dCef9c390Dd80024387543362b94dc56",
+   "payeeLabel": "Search API",
+   "amount": "20000",
+   "txHash": "0x1b0ea629830cbda1e3e2d009e7d73a77067b4e7805b5348ac2387f98a04f4290",
+   "error": {
+    "name": "Paused",
+    "args": [
+     "1"
+    ],
+    "reason": "Agent or a parent is paused"
+   }
+  }
+ ]
+}

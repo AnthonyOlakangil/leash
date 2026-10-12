@@ -8,6 +8,7 @@ Leash is a spending allowance for AI agents that they can split among sub-agents
 | --- | --- |
 | Source | https://github.com/AnthonyOlakangil/leash |
 | Hosted dashboard (read-only chain view) | https://leash-dashboard-rho.vercel.app |
+| Replay of a recorded run (no keys, nothing sent) | https://leash-dashboard-rho.vercel.app/?replay=1 |
 | LeashWallet (Base Sepolia) | `0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c` |
 | Verified source (Blockscout) | https://base-sepolia.blockscout.com/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c#code |
 | Basescan | https://sepolia.basescan.org/address/0xD6a92b451468f1f4decA6Fa27Fd8c367163D653c |
@@ -91,7 +92,7 @@ What Leash adds is a stateful ERC-1271 gate. The wallet keeps decrementing hiera
 - For the demo, the owner key is held server-side by the facilitator. This is a demo trade-off, not a production design.
 - A hostile sibling that learns a child's key before the legitimate registration can grief that registration. It cannot overspend, because the budget is charged against the whole ancestor chain.
 - The force-broadcast path and `/demo/bypass` are demo-only and unauthenticated.
-- The hosted dashboard is a read-only chain view. Owner controls and the Blocked lane's live events come from the local facilitator, so the full demo runs locally.
+- The hosted dashboard is a read-only chain view. Owner controls and the Blocked lane's live events come from the local facilitator, so the full demo runs locally. Its "Watch demo" button replays one recorded scripted run (wallet `0x7c37Cf64c2D7757f943cD4182e4e21ac91896810`) from that run's onchain logs and facilitator events; the replay signs and sends nothing, and every row links to the real transaction.
 - `createRoot` and `createChild` do not reject an expiry that is already in the past (a child's expiry only has to be at or below its parent's). Such a node can never pay, so this wastes gas but cannot move funds.
 - This is unaudited hackathon code. Do not use it with funds you cannot lose.
 

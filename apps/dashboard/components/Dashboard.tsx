@@ -3,10 +3,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChainState, LeashEvent } from "../lib/types";
 import { BASESCAN_TX } from "../lib/types";
 import { mockAdmin, mockInitial, mockTick } from "../lib/mock";
-import { ArrowLeftRight, Bot, Check, Copy, ExternalLink, LayoutGrid, MoreHorizontal, ScrollText, Settings } from "lucide-react";
+import { ArrowLeftRight, Bot, Check, Copy, ExternalLink, LayoutGrid, MoreHorizontal, Pause, Play, RotateCcw, ScrollText, Settings, X } from "lucide-react";
 import { ago, countdown, fmt, REASONS, short } from "../lib/format";
+import { BEAT_TITLES, REPLAY_TOTAL_MS, REPLAY_WALLET, replayFrame } from "../lib/replay";
 
 const EMPTY: ChainState = { mode: "mock", decimals: 6, labels: {}, nodes: [], logs: [] };
+// Hosted builds set this: a read-only replay of one recorded run, for visitors without the local services.
+const REPLAY_ENABLED = process.env.NEXT_PUBLIC_LEASH_REPLAY === "1";
+const REPLAY_SECONDS = Math.round(REPLAY_TOTAL_MS / 1000);
+type Replay = { startedAt: number; elapsed: number; paused: boolean };
 
 type FeedItem = {
   key: string; ts: number; tone: "paid" | "info" | "admin"; title: string; sub?: string; amount?: string; tx?: string;
@@ -20,8 +25,9 @@ type Tab = "all" | "payments" | "blocked";
 type Menu = { id: number; x: number; y: number } | null;
 
 export default function Dashboard() {
-  const [state, setState] = useState<ChainState>(EMPTY);
-  const [events, setEvents] = useState<LeashEvent[]>([]);
+  const [liveState, setState] = useState<ChainState>(EMPTY);
+  const [liveEvents, setEvents] = useState<LeashEvent[]>([]);
+  const [replay, setReplay] = useState<Replay | null>(null);
   const [now, setNow] = useState(Date.now());
   const [ready, setReady] = useState(false);
   const [live, setLive] = useState(false);
@@ -78,6 +84,25 @@ export default function Dashboard() {
     connect();
     return () => { dead = true; clearTimeout(t); es?.close(); };
   }, [live]);
+
+  // Replay clock. Live polling keeps running underneath; the view switches back on exit.
+  const replaying = replay !== null;
+  const replayPaused = replay?.paused ?? false;
+  useEffect(() => {
+    if (!replaying || replayPaused) return;
+    const t = setInterval(() => setReplay((r) => (r && !r.paused && r.elapsed < REPLAY_TOTAL_MS ? { ...r, elapsed: Math.min(r.elapsed + 200, REPLAY_TOTAL_MS) } : r)), 200);
+    return () => clearInterval(t);
+  }, [replaying, replayPaused]);
+  const frame = useMemo(() => (replay ? replayFrame(replay.startedAt, replay.elapsed) : null), [replay?.startedAt, replay?.elapsed]);
+  const state = frame ? frame.state : liveState;
+  const events = frame ? frame.events : liveEvents;
+  const startReplay = () => { setMenu(null); setTab("all"); setReplay({ startedAt: Date.now(), elapsed: 0, paused: false }); };
+  const exitReplay = () => { setMenu(null); setReplay(null); };
+  const toggleReplayPause = () => setReplay((r) => (r ? { ...r, paused: !r.paused } : r));
+  // ?replay=1 opens straight into the replay (shareable link).
+  useEffect(() => {
+    if (ready && REPLAY_ENABLED && new URLSearchParams(location.search).has("replay")) setReplay({ startedAt: Date.now(), elapsed: 0, paused: false });
+  }, [ready]);
 
   const d = state.decimals;
   const nameOf = (id: string | number) => {
@@ -161,7 +186,8 @@ export default function Dashboard() {
   async function act(action: "pause" | "unpause" | "raiseCap", id: number) {
     const n = nodes.find((x) => x.id === id)!;
     const newCap = action === "raiseCap" ? String(BigInt(n.cap) + 250_000n) : undefined;
-    if (state.mode === "mock") { mockRef.current = { ...mockRef.current, state: mockAdmin(mockRef.current.state, action, id, newCap) }; setState(mockRef.current.state); setToast(`${action} node ${id} (mock)`); }
+    if (replaying) setToast("The replay is read-only. Exit the replay to act on the live wallet.");
+    else if (state.mode === "mock") { mockRef.current = { ...mockRef.current, state: mockAdmin(mockRef.current.state, action, id, newCap) }; setState(mockRef.current.state); setToast(`${action} node ${id} (mock)`); }
     else {
       const r = await fetch("/api/admin", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, id, newCap }) }).then((x) => x.json()).catch(() => ({ ok: false, error: "network" }));
       setToast(r.ok ? `${action} node ${id} sent` : `${action} failed: ${typeof r.error === "string" ? r.error : r.error?.reason ?? "error"}`);
@@ -172,8 +198,8 @@ export default function Dashboard() {
   if (!ready) return <div role="status" className="h-screen bg-bg p-8 text-sm text-fg2">Loading…</div>;
 
   const menuNode = menu ? nodes.find((n) => n.id === menu.id) : undefined;
-  const statusText = state.mode === "mock" ? "Mock data" : `Live${sse ? "" : " (chain only)"}`;
-  const statusDot = state.mode === "mock" ? "bg-paused" : sse ? "bg-paid" : "bg-warn";
+  const statusText = replaying ? "Replay of a recorded run" : state.mode === "mock" ? "Mock data" : `Live${sse ? "" : " (chain only)"}`;
+  const statusDot = replaying ? "bg-accent" : state.mode === "mock" ? "bg-paused" : sse ? "bg-paid" : "bg-warn";
 
   return (
     <div className="h-screen overflow-hidden flex bg-bg text-fg">
@@ -200,6 +226,9 @@ export default function Dashboard() {
             <span>Treasury</span><span className="text-fg3">/</span><span className="text-fg">Agent wallet</span>
           </nav>
           <div className="ml-auto flex items-center gap-3">
+            {REPLAY_ENABLED && (replaying
+              ? <button type="button" onClick={exitReplay} className="h-7 px-2.5 rounded-md border border-line text-[13px] text-fg2 hover:text-fg hover:bg-elevated inline-flex items-center gap-1.5"><X size={13} aria-hidden />Exit replay</button>
+              : <button type="button" onClick={startReplay} className="h-7 px-3 rounded-md bg-accent text-bg text-[13px] font-medium hover:opacity-90 inline-flex items-center gap-1.5"><Play size={13} aria-hidden />Watch demo</button>)}
             <span className="rounded-full bg-accent/10 text-accent px-2.5 h-6 inline-flex items-center text-[13px]">Base Sepolia</span>
             <span className="inline-flex items-center gap-1 rounded-md border border-line bg-surface pl-2.5 pr-1 h-7">
               <span translate="no" className="mono text-[13px] text-fg2">{state.wallet ? short(state.wallet) : "No wallet yet"}</span>
@@ -220,6 +249,45 @@ export default function Dashboard() {
             <Kpi label="Blocked attempts" value={allBlocked.length} d={0} plain caption={allBlocked[0] ? `Last ${ago(allBlocked[0].ts, now)}` : "None so far"} />
             <Kpi label="Active agents" value={activeAgents} d={0} plain caption={`of ${nodes.length}`} />
           </div>
+
+          {REPLAY_ENABLED && frame && (
+            <section aria-label="Demo replay" className="shrink-0 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3 flex items-center gap-4">
+              <span className="shrink-0 rounded-full bg-accent/15 text-accent px-2 h-6 inline-flex items-center text-[12px] font-medium">Replay</span>
+              <div className="min-w-0 flex-1">
+                <p aria-live="polite" className="text-sm text-fg truncate">
+                  {frame.done
+                    ? "Replay finished. Every beat ran onchain; open any row's link to see the real transaction."
+                    : frame.beat
+                      ? <><span className="text-fg2">Beat {frame.beat} of {BEAT_TITLES.length}: </span>{BEAT_TITLES[frame.beat - 1]}</>
+                      : "Starting from a fresh wallet holding 5.00 AUSD"}
+                </p>
+                <div aria-hidden className="mt-2 flex gap-1">
+                  {BEAT_TITLES.map((_, i) => <span key={i} className={`h-1 flex-1 rounded-full ${frame.beat > i ? "bg-accent" : "bg-white/10"}`} />)}
+                </div>
+                <p className="mt-1.5 text-[12px] text-fg3 truncate">
+                  Recorded scripted run on Base Sepolia, wallet <span translate="no" className="mono">{short(REPLAY_WALLET)}</span>. Nothing is signed or sent during the replay.
+                </p>
+              </div>
+              <div className="shrink-0 flex items-center gap-1">
+                {!frame.done && (
+                  <button type="button" onClick={toggleReplayPause} aria-label={replayPaused ? "Resume replay" : "Pause replay"} className="h-8 w-8 inline-flex items-center justify-center rounded-md text-fg2 hover:text-fg hover:bg-elevated">
+                    {replayPaused ? <Play size={15} aria-hidden /> : <Pause size={15} aria-hidden />}
+                  </button>
+                )}
+                <button type="button" onClick={startReplay} aria-label="Restart replay" className={frame.done ? "h-8 px-2.5 rounded-md text-[13px] text-fg2 hover:text-fg hover:bg-elevated inline-flex items-center gap-1.5" : "h-8 w-8 inline-flex items-center justify-center rounded-md text-fg2 hover:text-fg hover:bg-elevated"}>
+                  <RotateCcw size={15} aria-hidden />{frame.done && "Replay again"}
+                </button>
+              </div>
+            </section>
+          )}
+          {REPLAY_ENABLED && !frame && state.mode === "live" && nodes.length === 0 && events.length === 0 && (
+            <section aria-label="Demo replay" className="shrink-0 rounded-lg border border-line bg-surface px-4 py-3 flex items-center gap-4">
+              <p className="flex-1 min-w-0 text-sm text-fg2">
+                This agent wallet is fresh: 5.00 AUSD and no agents yet. Watch a recorded run of the full demo ({BEAT_TITLES.length} beats, about {REPLAY_SECONDS} seconds).
+              </p>
+              <button type="button" onClick={startReplay} className="shrink-0 h-8 px-3 rounded-md bg-accent text-bg text-[13px] font-medium hover:opacity-90 inline-flex items-center gap-1.5"><Play size={14} aria-hidden />Watch demo</button>
+            </section>
+          )}
 
           {state.error && <div className="shrink-0 rounded-md bg-blocked/10 text-blocked px-3 py-2 text-[13px]">Chain read failed: <span className="mono">{state.error}</span></div>}
 
